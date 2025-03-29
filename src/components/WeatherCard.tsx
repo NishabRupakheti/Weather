@@ -69,7 +69,7 @@ export default function WeatherCard() {
       const city = data.address?.city || data.address?.town || "Unknown";
       fetchWeather(city);
     } catch (err) {
-      setError(`Failed to fetch the city name`);
+      setError(`Failed to fetch the city name : ${err}`);
       fetchWeather("Helsinki");
     }
   };
