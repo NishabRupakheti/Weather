@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface WeatherData {
@@ -40,6 +40,9 @@ export default function WeatherCard() {
   };
 
   const getUserLocation = () => {
+
+    setLoading(true);
+
     if (!navigator.geolocation) {
       setError("The browser doesn't support the geolocation");
       return;
@@ -67,12 +70,20 @@ export default function WeatherCard() {
       fetchWeather(city);
     } catch (err) {
       setError(`Failed to fetch the city name`);
+      fetchWeather("Helsinki");
     }
   };
 
   useEffect(() => {
     getUserLocation();
   }, []);
+
+  const handleSearch = (e: React.FormEvent)=>{
+    e.preventDefault()
+    if(city.trim()) {
+      fetchWeather(city)
+    }
+  }
 
   return (
     <motion.div
@@ -90,7 +101,7 @@ export default function WeatherCard() {
         Weather 🌦️🌅
       </motion.h2>
 
-      <form className="flex space-x-3">
+      <form onSubmit={handleSearch} className="flex space-x-3">
         <input
           type="text"
           placeholder="Enter a city"
@@ -107,7 +118,7 @@ export default function WeatherCard() {
               : "bg-indigo-600 hover:bg-indigo-700"
           }`}
           disabled={loading}
-          onClick={() => fetchWeather(city)}
+          type="submit"
         >
           {loading ? "Loading..." : "Search"}
         </motion.button>

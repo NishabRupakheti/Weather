@@ -5,6 +5,7 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get("city") || "Helsinki";
   const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
+  
   try {
     const geocodeUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
     const response = await fetch(geocodeUrl);
